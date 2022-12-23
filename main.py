@@ -11,7 +11,7 @@ import warnings
 
 from pychop3d.search import beam_search
 from pychop3d import connector
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 from pychop3d import utils
 from trimesh import Trimesh
 
@@ -28,7 +28,6 @@ def run(starter: Trimesh):
     :type starter: `trimesh.Trimesh`
     :type starter: `bsp_tree.BSPTree`
     """
-    config = Configuration.config
     # basic logging setup
     logging.basicConfig(
         level=logging.INFO,
@@ -80,7 +79,10 @@ if __name__ == "__main__":
 
     # load specified or default config file
     try:
-        config = Configuration(args.config)
+        configur = Configuration(args.config)
+        # set config to the loaded configuration object
+        config.__dict__ = configur.__dict__
+
     except:
         parser.print_help()
         traceback.print_exc()
@@ -99,7 +101,6 @@ if __name__ == "__main__":
     config.directory = new_directory
     # save configuration
     config.save()
-    Configuration.config = config
 
     # open the input mesh as the starter
     starter = utils.open_mesh()

@@ -2,7 +2,7 @@ import trimesh
 import numpy as np
 import copy
 import os
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 from pychop3d import utils
 import math
 

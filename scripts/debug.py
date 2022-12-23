@@ -3,7 +3,7 @@ import logging
 
 from pychop3d import utils
 from pychop3d import connector
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s  %(name)s  [%(levelname)s]  %(message)s",

@@ -6,14 +6,13 @@ from shapely import affinity
 from trimesh import creation
 import matplotlib.pyplot as plt
 
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 from pychop3d import utils
 
 
 class ConnectedComponent:
 
     def __init__(self, polygon, xform, normal, origin):
-        config = Configuration.config
         self.valid = False
         self.polygon = polygon
         self.normal = normal
@@ -46,7 +45,6 @@ class ConnectedComponent:
         self.valid = True
 
     def evaluate_interface(self, positive, negative):
-        config = Configuration.config
 
         plane_samples = self.grid_sample_polygon()
 
@@ -175,7 +173,6 @@ class CrossSection:
 def bidirectional_split(mesh, origin, normal) -> Tuple[Optional[List[trimesh.Trimesh]], Optional[CrossSection], str]:
     """https://github.com/mikedh/trimesh/issues/235"""
     parts_list, cross_section = [], None
-    config = Configuration.config
     tries = 0
     positive_parts, negative_parts = [], []
     multipliers = np.roll(np.arange(-.5, .5, .1), 5)

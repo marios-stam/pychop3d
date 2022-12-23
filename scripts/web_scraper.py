@@ -15,7 +15,7 @@ import sys
 import logging
 
 from main import run
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 from pychop3d import utils
 
 url_template = "https://www.thingiverse.com/download:{}"

@@ -6,7 +6,7 @@ import tempfile
 
 from pychop3d import search
 from pychop3d import utils
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 
 
 @pytest.mark.skip("Not working in CI")

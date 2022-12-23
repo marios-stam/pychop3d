@@ -7,7 +7,7 @@ import multiprocessing
 from pychop3d import utils
 from pychop3d import bsp_tree
 from pychop3d.process_normal import process_normal
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 from pychop3d import bsp_node
 
 
@@ -26,7 +26,6 @@ def evaluate_cuts(base_tree, node: bsp_node.BSPNode):
     :return: list of 'unique' trees resulting from splitting the input tree at the specified node
     :rtype: list of `bsp_tree.BSPTree`
     """
-    config = Configuration.config  # Collect configuration
 
     N = config.normals  # Collect predefined set of normal vectors
     N = np.append(N, node.auxiliary_normals, axis=0)  # Append partition's bounding-box-aligned vectors as normals
@@ -65,7 +64,6 @@ def beam_search(starter: Union[trimesh.Trimesh, bsp_tree.BSPTree]):
     :return: a BSPTree which adequately partitions the input object
     :rtype: `bsp_tree.BSPTree`
     """
-    config = Configuration.config  # collect configuration
     # open up starter, this can either be a trimesh or an already partitioned object as a tree
     if isinstance(starter, trimesh.Trimesh):
         current_trees = [bsp_tree.BSPTree(starter)]

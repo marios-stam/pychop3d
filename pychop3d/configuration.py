@@ -149,4 +149,3 @@ class Configuration:
 
 
 config = Configuration()
-Configuration.config = config

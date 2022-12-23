@@ -3,7 +3,7 @@ import numpy as np
 import traceback
 
 from pychop3d import section
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config, config
 
 
 class ConvexHullError(Exception):
@@ -19,7 +19,6 @@ class BSPNode:
         :param parent: BSPNode which was split to produce this node and this node's sibling nodes
         :param num: index of this node, e.g. 0 -> 0th child of this node's parent
         """
-        config = Configuration.config  # collect configuration
         self.part = part
         self.parent = parent
         self.children = []
@@ -74,7 +73,6 @@ class BSPNode:
         :return: boolean indicating if this node is different from another
         :rtype: bool
         """
-        config = Configuration.config  # collect configuration
         o = other_node.plane[0]  # other plane origin
         delta = o - self.plane[0]  # vector from this plane's origin to the others'
         dist = abs(self.plane[1] @ delta)  # distance along this plane's normal to other plane

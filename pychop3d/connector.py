@@ -3,7 +3,7 @@ import logging
 import trimesh
 import traceback
 
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 from pychop3d import bsp_tree
 from pychop3d import utils
 
@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 class ConnectorPlacer:
 
     def __init__(self, tree):
-        config = Configuration.config
 
         self.connected_components = []
         self.connectors = []
@@ -66,7 +65,6 @@ class ConnectorPlacer:
         self.collisions = np.logical_or(self.collisions, mask)
 
     def evaluate_connector_objective(self, state):
-        config = Configuration.config
         objective = 0
         n_collisions = self.collisions[state, :][:, state].sum()
         objective += config.connector_collision_penalty * n_collisions
@@ -94,7 +92,6 @@ class ConnectorPlacer:
         return state
 
     def simulated_annealing_connector_placement(self):
-        config = Configuration.config
         state = self.get_initial_state()
         objective = self.evaluate_connector_objective(state)
         logger.info(f"initial objective: {objective}")
@@ -131,7 +128,6 @@ class ConnectorPlacer:
 
     def insert_connectors(self, tree, state):
         logger.info(f"inserting {state.sum()} connectors")
-        config = Configuration.config
         if tree.nodes[0].plane is None:
             new_tree = utils.separate_starter(tree.nodes[0].part)
         else:

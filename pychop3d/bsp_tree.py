@@ -2,7 +2,7 @@ import trimesh
 import numpy as np
 import copy
 
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config, config
 from pychop3d import bsp_node
 
 
@@ -14,7 +14,6 @@ class BSPTree:
         :param part: original part / object to split
         :type part: `trimesh.Trimesh`
         """
-        config = Configuration.config  # collect configuration
         self.nodes = [bsp_node.BSPNode(part)]  # create root node and the list of nodes
         # calculate initial nparts objective
         nparts = 1  # nparts = sum([l.n_parts for l in self.leaves]) / nparts_original --> measures part reduction
@@ -145,7 +144,6 @@ class BSPTree:
         :return: value of the objective function for this tree
         :rtype: float
         """
-        config = Configuration.config
         part = config.objective_weights['part'] * self.objectives['nparts']
         util = config.objective_weights['utilization'] * self.objectives['utilization']
         connector = config.objective_weights['connector'] * self.objectives['connector']
@@ -188,7 +186,6 @@ def get_planes(part, normal):
     :return: list of all valid cutting planes for the input object
     :rtype: list
     """
-    config = Configuration.config  # collect configuration
     projection = part.vertices @ normal  # project all vertices of the input object onto the input normal vector
     # determine the extent of the object in the direction defined by the normal vector
     limits = [projection.min(), projection.max()]

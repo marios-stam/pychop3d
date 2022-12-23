@@ -7,7 +7,7 @@ import logging
 from pychop3d import bsp_tree
 from pychop3d import bsp_node
 from pychop3d.objective_functions import evaluate_utilization_objective, evaluate_nparts_objective
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 from trimesh.interfaces.blender import _blender_executable, exists
 from trimesh.interfaces.generic import MeshScript
 from trimesh import repair
@@ -19,7 +19,6 @@ def preprocess(mesh, debug=True):
     """
     Run a preprocess operation with mesh using Blender.
     """
-    config = Configuration.config
 
     logger.info("starting preprocessing")
     if not exists:
@@ -87,7 +86,6 @@ def open_mesh() -> trimesh.Trimesh:
     """
     logger.info("opening")
 
-    config = Configuration.config
     # OPEN MESH
     mesh_fn = find_file(config.mesh)
     mesh = trimesh.load(mesh_fn)
@@ -199,7 +197,6 @@ def preview_tree(tree, other_objects=None):
 
 
 def save_tree(tree, filename, state=None):
-    config = Configuration.config
 
     if state is None:
         state = []
@@ -223,7 +220,7 @@ def export_tree_stls(tree, fn_info="part"):
     :param fn_info: string added to the STL filenames after the object name
     :type fn_info: str
     """
-    config = Configuration.config
+
     for i, leaf in enumerate(tree.leaves):
         leaf.part.export(os.path.join(config.directory,
                                       f"{config.name}_{fn_info}_{i}.stl"))

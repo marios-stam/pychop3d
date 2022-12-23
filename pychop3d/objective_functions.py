@@ -1,7 +1,7 @@
 import numpy as np
 import trimesh
 
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 
 
 def evaluate_nparts_objective(trees, path):
@@ -14,7 +14,6 @@ def evaluate_nparts_objective(trees, path):
 
 
 def evaluate_utilization_objective(trees, path):
-    config = Configuration.config
     V = np.prod(config.printer_extents)
     if config.obb_utilization:
         for tree in trees:
@@ -72,7 +71,6 @@ def evaluate_fragility_objective(trees, path):
         - if the rays don't intersect the mesh somewhere else, check if the rays are longer than the Thold
         - if they do, check the thold but also make sure the ray hits the plane first
     """
-    config = Configuration.config
     part = trees[0].get_node(path).part
     normal = trees[0].get_node(path).plane[1]
     origins = np.array([t.get_node(path).plane[0] for t in trees])

@@ -19,7 +19,7 @@ import tempfile
 import yaml
 import os
 
-from pychop3d.configuration import Configuration
+from pychop3d.configuration import Configuration, config
 from pychop3d import bsp_tree
 from pychop3d import bsp_node
 from pychop3d import utils
