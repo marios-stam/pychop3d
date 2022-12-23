@@ -1,3 +1,4 @@
+from typing import Union
 import numpy as np
 import trimesh
 import logging
@@ -7,13 +8,14 @@ from pychop3d import utils
 from pychop3d import bsp_tree
 from pychop3d.process_normal import process_normal
 from pychop3d.configuration import Configuration
+from pychop3d import bsp_node
 
 
 logger = logging.getLogger(__name__)
 PARALLEL = False
 
 
-def evaluate_cuts(base_tree, node):
+def evaluate_cuts(base_tree, node: bsp_node.BSPNode):
     """this function returns a list of unique trees by splitting a specified node of an input tree along all planes
     as defined in the configuration
 
@@ -54,7 +56,7 @@ def evaluate_cuts(base_tree, node):
     return result_set
 
 
-def beam_search(starter):
+def beam_search(starter: Union[trimesh.Trimesh, bsp_tree.BSPTree]):
     """This function executes the beam search to find a good BSPTree partitioning of the input object
 
     :param starter: Either an unpartitioned mesh or an already partitioned tree to begin the process using

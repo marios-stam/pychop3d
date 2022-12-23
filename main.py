@@ -13,13 +13,13 @@ from pychop3d.search import beam_search
 from pychop3d import connector
 from pychop3d.configuration import Configuration
 from pychop3d import utils
-
+from trimesh import Trimesh
 
 logger = logging.getLogger(__name__)
 warnings.filterwarnings("ignore")
 
 
-def run(starter):
+def run(starter: Trimesh):
     """This function goes through the complete Pychop3D process, including the beam search for the optimal
     cutting planes, determining the connector locations, adding the connectors to the part meshes, then saving the
     STLs, the tree json and the configuration file.

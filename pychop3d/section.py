@@ -1,3 +1,4 @@
+from typing import List, Optional, Tuple
 import trimesh
 import numpy as np
 import shapely.geometry as sg
@@ -123,13 +124,13 @@ class ConnectedComponent:
 
 class CrossSection:
 
-    def __init__(self, mesh, origin, normal):
+    def __init__(self, mesh: trimesh.Trimesh, origin, normal):
         self.valid = False
         self.cc_valid = True
         self.origin = origin
         self.normal = normal
         self.connected_components = []
-        path3d = mesh.section(plane_origin=origin, plane_normal=normal)
+        path3d: trimesh.path.Path3D = mesh.section(plane_origin=origin, plane_normal=normal)
         if path3d is None:
             # 'Missed' the part basically
             return
@@ -171,8 +172,9 @@ class CrossSection:
         return sum([cc.connector_diameter for cc in self.connected_components]) / len(self.connected_components)
 
 
-def bidirectional_split(mesh, origin, normal):
+def bidirectional_split(mesh, origin, normal) -> Tuple[Optional[List[trimesh.Trimesh]], Optional[CrossSection], str]:
     """https://github.com/mikedh/trimesh/issues/235"""
+    parts_list, cross_section = [], None
     config = Configuration.config
     tries = 0
     positive_parts, negative_parts = [], []

@@ -12,8 +12,6 @@ from trimesh.interfaces.blender import _blender_executable, exists
 from trimesh.interfaces.generic import MeshScript
 from trimesh import repair
 from trimesh import util
-
-
 logger = logging.getLogger(__name__)
 
 
@@ -84,7 +82,7 @@ def find_file(fn):
     raise FileNotFoundError(f"Can't find file: {abs_fn}")
 
 
-def open_mesh():
+def open_mesh() -> trimesh.Trimesh:
     """open the mesh according to the configuration and apply any scaling or subdivision
     """
     logger.info("opening")

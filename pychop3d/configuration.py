@@ -47,6 +47,7 @@ class Configuration:
         self.normals = self.uniform_normals()
 
     def restore_defaults(self):
+        # declare  all class attributes
         self.name = "chopped"
         self.do_not_save = ['normals']
         # printer parameters
