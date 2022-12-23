@@ -1,3 +1,4 @@
+from typing import List
 import trimesh
 import numpy as np
 import copy
@@ -63,7 +64,7 @@ class BSPTree:
         return node
 
     @property
-    def leaves(self):
+    def leaves(self) -> List[bsp_node.BSPNode]:
         """property containing the leaves of the tree. The leaves of the final BSP tree correspond to parts
         small enough to fit in the printer
 
@@ -94,7 +95,7 @@ class BSPTree:
         return True
 
     @property
-    def largest_part(self):
+    def largest_part(self) -> bsp_node.BSPNode:
         """property pointing to this trees largest part by number of parts
         """
         # sort leaves by n_parts, give the last (highest) one

@@ -1,3 +1,4 @@
+from typing import List
 import numpy as np
 import trimesh
 import json
@@ -137,7 +138,7 @@ def all_at_goal(trees):
     return True
 
 
-def not_at_goal_set(trees):
+def not_at_goal_set(trees: List[bsp_tree.BSPTree]) -> List[bsp_tree.BSPTree]:
     """convenience / readability function which returns the not terminated trees from a list
 
     :param trees: list of input trees

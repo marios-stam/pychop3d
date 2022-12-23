@@ -12,7 +12,7 @@ class ConvexHullError(Exception):
 
 class BSPNode:
 
-    def __init__(self, part, parent=None, num=None):
+    def __init__(self, part: trimesh.Trimesh, parent=None, num=None):
         """Initialize an instance of `BSPNode`, determine n_parts objective and termination status.
 
         :param part: mesh part associated with this node

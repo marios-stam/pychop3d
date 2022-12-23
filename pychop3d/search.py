@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 import numpy as np
 import trimesh
 import logging
@@ -40,7 +40,7 @@ def evaluate_cuts(base_tree, node: bsp_node.BSPNode):
         for arg in args:
             pool_output.append(process_normal(*arg))
     print()
-    trees = []
+    trees: List[bsp_tree.BSPTree] = []
     for i in range(len(N)):
         trees += pool_output[i]
         logger.info(f"index {i}, normal {N[i]}, norm trees: {len(pool_output[i])}")
