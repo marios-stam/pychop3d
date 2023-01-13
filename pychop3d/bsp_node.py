@@ -1,3 +1,4 @@
+from __future__ import annotations
 import trimesh
 import numpy as np
 import traceback
@@ -12,7 +13,7 @@ class ConvexHullError(Exception):
 
 class BSPNode:
 
-    def __init__(self, part: trimesh.Trimesh, parent=None, num=None):
+    def __init__(self, part: trimesh.Trimesh, parent: BSPNode = None, num: int = None):
         """Initialize an instance of `BSPNode`, determine n_parts objective and termination status.
 
         :param part: mesh part associated with this node
@@ -33,7 +34,7 @@ class BSPNode:
             self.path = (*self.parent.path, num)
 
     @property
-    def obb(self):
+    def obb(self) -> trimesh.primitives.Box:
         """oriented bounding box
 
         :return: oriented bounding box
@@ -84,7 +85,7 @@ class BSPNode:
         return dist > config.different_origin_th or angle > config.different_angle_th
 
 
-def split(node, plane):
+def split(node:BSPNode, plane):
     """Split a node along a plane
 
     :param node: BSPNode to split

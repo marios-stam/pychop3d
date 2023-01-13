@@ -10,6 +10,7 @@ import traceback
 import warnings
 
 from pychop3d.search import beam_search
+from pychop3d.searchClass import BeamSearch
 from pychop3d import connector
 from pychop3d.configuration import Configuration, config
 from pychop3d import utils
@@ -41,7 +42,15 @@ def run(starter: Trimesh):
     t0 = time.time()
     # complete the beam search using the starter, no search will take place if the starter tree is already
     # adequately partitioned
-    tree = beam_search(starter)
+    
+    useClass = True
+    if useClass:
+        BMSearch = BeamSearch(starter)
+        tree = BMSearch.search()
+    else:
+        tree = beam_search(starter)
+    
+    
     logger.info(f"Best BSP-tree found in {time.time() - t0} seconds")
     # save the tree now in case the connector placement fails
     utils.save_tree(tree, "final_tree.json")

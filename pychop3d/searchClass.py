@@ -14,6 +14,66 @@ from pychop3d import bsp_node
 logger = logging.getLogger(__name__)
 PARALLEL = False
 
+class BeamSearch:
+    def __init__(self,starter: Union[trimesh.Trimesh, bsp_tree.BSPTree]) -> None:
+        self.current_trees: List[bsp_tree.BSPTree] = []
+        # ================================================================
+        self.starter = starter
+        self.initialiseCurrentTrees()
+        self.printStartingInfo()
+
+    def initialiseCurrentTrees(self):
+        starter = self.starter
+        if isinstance(starter, trimesh.Trimesh):
+            self.current_trees = [bsp_tree.BSPTree(starter)]
+        elif isinstance(starter, bsp_tree.BSPTree):
+            self.current_trees = [starter]
+        else:
+            raise NotImplementedError
+    
+    def printStartingInfo(self):
+        starter = self.starter
+        logger.info(f"Starting beam search with an instance of {type(starter)}")
+        if isinstance(starter, trimesh.Trimesh):
+            logger.info("Trimesh stats:")
+            logger.info(f"verts: {starter.vertices.shape[0]} extents: {starter.extents}")
+        else:
+            logger.info(f"n_leaves: {len(starter.leaves)}")
+            logger.info(f"Largest part trimesh stats:")
+            logger.info(f"verts: {starter.largest_part.part.vertices.shape[0]}, extents: {starter.largest_part.part.extents}")
+
+    def search(self):
+        if utils.all_at_goal(self.current_trees):
+            raise Exception("Input mesh already small enough to fit in printer")
+
+        n_leaves = 1
+        while not utils.all_at_goal(self.current_trees):  # continue until we have at least {beam_width} trees
+            new_bsps = []  # list of new bsps
+            for tree in utils.not_at_goal_set(self.current_trees):  # look at all trees that haven't terminated
+                if len(tree.leaves) != n_leaves:  # only consider trees with a certain number of leaves
+                    continue
+                
+                self.current_trees.remove(tree)  # remove the current tree (we will replace it with its best partition)
+                largest_node = tree.largest_part  # split the largest node
+                new_bsps += evaluate_cuts(tree, largest_node)  # consider many different cutting planes for the node
+            print(f"n_leaves: {n_leaves}, n_trees: {len(new_bsps)}")
+            
+            n_leaves += 1  # on the next iteration, look at trees with more leaves
+            self.current_trees += new_bsps
+        
+            self.current_trees = sorted(self.current_trees, key=lambda x: x.objective)  # sort all of the trees including the new ones
+
+            self.current_trees = self.current_trees[:config.beam_width]  # keep only the best {beam_width} trees
+
+            if len(self.current_trees) == 0:  # all of the trees failed
+                raise Exception("No valid chops found")
+
+            #  save progress
+            for i, tree in enumerate(self.current_trees[:config.beam_width]):
+                utils.save_tree(tree, f"{config.name}_{i}.json")
+            utils.export_tree_stls(self.current_trees[0])
+    
+        return self.current_trees[0]
 
 def evaluate_cuts(base_tree, node: bsp_node.BSPNode):
     """this function returns a list of unique trees by splitting a specified node of an input tree along all planes
@@ -54,8 +114,8 @@ def evaluate_cuts(base_tree, node: bsp_node.BSPNode):
     logger.info(f"{len(result_set)} valid trees")
     return result_set
 
+"""
 def beam_search(starter: Union[trimesh.Trimesh, bsp_tree.BSPTree])->bsp_tree.BSPTree:
-    """
     This function executes the beam search to find a good BSPTree partitioning of the input object
 
     :param starter: Either an unpartitioned mesh or an already partitioned tree to begin the process using
@@ -63,7 +123,6 @@ def beam_search(starter: Union[trimesh.Trimesh, bsp_tree.BSPTree])->bsp_tree.BSP
     :type starter: `bsp_tree.BSPTree`
     :return: a BSPTree which adequately partitions the input object
     :rtype: `bsp_tree.BSPTree`
-    """
     
     # open up starter, this can either be a trimesh or an already partitioned object as a tree
     if isinstance(starter, trimesh.Trimesh):
@@ -126,3 +185,4 @@ def beam_search(starter: Union[trimesh.Trimesh, bsp_tree.BSPTree])->bsp_tree.BSP
         utils.export_tree_stls(current_trees[0])
 
     return current_trees[0]
+"""

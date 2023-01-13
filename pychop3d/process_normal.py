@@ -4,7 +4,7 @@ from pychop3d.configuration import Configuration, config
 from pychop3d.bsp_node import BSPNode
 
 
-def process_normal(normal, node: BSPNode, base_tree):
+def process_normal(normal, node: BSPNode, base_tree:bsp_tree.BSPTree, config):
     trees_of_this_normal = []  # start a list of trees for splits along this normal
     for plane in bsp_tree.get_planes(node.part, normal):  # iterate over all valid cutting planes for the node
         tree, result = bsp_tree.expand_node(base_tree, node.path, plane)  # split the node using the plane

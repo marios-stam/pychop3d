@@ -124,7 +124,7 @@ def load_connector_configuration(tree_file):
     return np.array(data['state'])
 
 
-def all_at_goal(trees):
+def all_at_goal(trees: List[bsp_tree.BSPTree]):
     """convenience / readability function which returns whether a list of trees are all terminated
 
     :param trees: list of trees to check
@@ -213,7 +213,7 @@ def save_tree(tree, filename, state=None):
         json.dump({'nodes': nodes, 'state': [bool(s) for s in state]}, f)
 
 
-def export_tree_stls(tree, fn_info="part"):
+def export_tree_stls(tree:bsp_tree.BSPTree, fn_info="part"):
     """Saves all of a tree's parts to the directory specified in the configuration
 
     :param tree: tree to save the parts of

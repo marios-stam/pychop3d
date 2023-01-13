@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 import trimesh
 import numpy as np
 import copy
@@ -154,7 +154,7 @@ class BSPTree:
         return part + util + connector + fragility + seam + symmetry
 
 
-def expand_node(tree, path, plane):
+def expand_node(tree: BSPTree, path: tuple, plane) -> Tuple[BSPTree, str]:
     """Splits a `tree` at the node given by `path` using `plane`. Returns a copy of the original tree but with the
     split node
 
@@ -176,7 +176,7 @@ def expand_node(tree, path, plane):
     return new_tree, result
 
 
-def get_planes(part, normal):
+def get_planes(part: trimesh.Trimesh, normal):
     """get all planes in the form of (origin, normal) pairs corresponding to valid cuts of the input part. Planes are
     in the direction specified by `normal` and are spaced according to the `plane_spacing` configuration parameter.
 
